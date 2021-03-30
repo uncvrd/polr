@@ -118,13 +118,13 @@ class ApiLinkController extends ApiController {
 
         $link = LinkHelper::linkExists($url_ending);
 
-        if ($link['secret_key']) {
-            if ($url_key != $link['secret_key']) {
-                throw new ApiException('ACCESS_DENIED', 'Invalid URL code for secret URL.', 401, $response_type);
-            }
-        }
-
+        
         if ($link) {
+            if ($link['secret_key']) {
+                if ($url_key != $link['secret_key']) {
+                    throw new ApiException('ACCESS_DENIED', 'Invalid URL code for secret URL.', 401, $response_type);
+                }
+            }
             return self::encodeResponse([
                 'long_url' => $link['long_url'],
                 'created_at' => $link['created_at'],
